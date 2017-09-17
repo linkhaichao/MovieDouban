@@ -4,12 +4,15 @@
         return {
             restrit:'A',
             link:function ($scope, elem, attr) {
-                var path = $location.path();
-                var alink = elem.children().attr('href');
-                $scope.type = alink.replace(/#(\/.+?)\/\d/,'$1');
-                if(path.startsWith($scope.type)){
-                    elem.addClass('active');
-                }
+                $scope.$location = $location;
+                $scope.$watch('$location.path()',function (newVal) {
+                    var path = newVal;
+                    var alink = elem.children().attr('href');
+                    $scope.type = alink.replace(/#(\/.+?)\/\d/,'$1');
+                    if(path.startsWith($scope.type)){
+                        elem.addClass('active');
+                    }
+                });
                 elem.on('click',function () {
                     elem.parent().children().removeClass('active');
                     elem.addClass('active');
